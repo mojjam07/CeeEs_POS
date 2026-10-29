@@ -116,7 +116,7 @@ const psFetch = async (path, init) => {
 r.post('/paystack/init', auth, h(async (req, res) => {
   const amount = r2(+req.body.amount), email = (req.body.email || '').trim();
   if (!(amount >= 100) || !/^\S+@\S+\.\S+$/.test(email)) throw bad('Enter a valid email and an amount of at least 100');
-  const reference = `till_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
+  const reference = `ceees_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
   const d = await psFetch('/transaction/initialize', { method: 'POST', body: JSON.stringify({ email, amount: Math.round(amount * 100), reference, currency: 'NGN', channels: ['card'] }) });
   await q('INSERT INTO paystack_txns (reference,amount,email) VALUES ($1,$2,$3)', [reference, amount, email]);
   res.json({ access_code: d.access_code, reference });

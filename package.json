@@ -1,25 +1,13 @@
 {
-  "name": "cs-pos",
+  "name": "ceees",
   "version": "1.0.0",
   "private": true,
-  "type": "module",
-  "engines": {
-    "node": ">=18"
-  },
+  "description": "CeeEs point of sale. Dependencies live in server/ and client/ separately; this file only holds convenience scripts.",
   "scripts": {
-    "start": "node server/index.js",
-    "dev": "concurrently -n api,web \"node --watch server/index.js\" \"npm run dev --prefix client\"",
-    "build": "npm install --include=dev --prefix client && npm run build --prefix client"
-  },
-  "dependencies": {
-    "bcryptjs": "^2.4.3",
-    "express": "^4.19.2",
-    "express-rate-limit": "^7.4.0",
-    "helmet": "^7.1.0",
-    "jsonwebtoken": "^9.0.2",
-    "pg": "^8.12.0"
-  },
-  "devDependencies": {
-    "concurrently": "^8.2.2"
+    "install:all": "npm install --prefix server && npm install --prefix client",
+    "dev:server": "npm run dev --prefix server",
+    "dev:client": "npm run dev --prefix client",
+    "build": "npm install --include=dev --prefix client && npm run build --prefix client",
+    "start": "npm start --prefix server"
   }
 }

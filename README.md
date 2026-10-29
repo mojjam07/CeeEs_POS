@@ -1,17 +1,23 @@
-# Till — Point of Sale for any store
+# CeeEs — Point of Sale for any store
 
-Vite + React front end, Node/Express API, PostgreSQL. One web service serves both.
+```
+ceees/
+  server/   Node + Express API (own package.json and dependencies)
+  client/   Vite + React app   (own package.json and dependencies)
+  render.yaml
+```
 
 **Features:** admin and cashier logins, products with barcode/SKU, cost, stock and low-stock alerts, open tabs/tables
 (rename to "Table", "Client", etc.), split payments (Cash, Transfer, POS, Paystack card), change calculation, receipts,
 void with restock, reports (revenue, profit, daily, top products, payment methods, cashiers) and optional VAT.
 
 ## Run locally
-1. Create a Postgres database, copy `.env.example` to `.env`, and fill it in.
-2. `npm install && npm install --prefix client`
-3. `export $(grep -v '^#' .env | xargs)` then `npm run dev` (API on :3000, app on http://localhost:5173)
+1. Create a Postgres database, then `cp server/.env.example server/.env` and fill it in.
+2. `npm run install:all` (or `npm install` inside `server/` and `client/` separately)
+3. Terminal 1: `npm run dev:server` (API on :3000). Terminal 2: `npm run dev:client` (app on http://localhost:5173).
 
 The first admin is created from `ADMIN_EMAIL` / `ADMIN_PASSWORD` when the users table is empty.
+Server dev mode needs Node 20.6 or newer (it reads `server/.env`).
 
 ## Deploy on Render
 1. Push this folder to a GitHub repo.
@@ -25,4 +31,3 @@ To use Supabase or another host instead, set `DATABASE_URL` yourself and `PGSSL=
 ## Paystack
 Cards are paid in the Paystack popup. The server initialises the transaction, verifies it with Paystack, and only then accepts
 it as a payment, once per sale and for the exact amount. Voiding a sale does not refund cards; refund in the Paystack dashboard.
-# CeeEs_POS
