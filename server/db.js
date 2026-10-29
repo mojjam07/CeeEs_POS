@@ -8,6 +8,7 @@ pg.types.setTypeParser(20, parseInt);     // bigint  -> number
 export const pool = new pg.Pool({
   connectionString: process.env.DATABASE_URL,
   ssl: process.env.PGSSL === 'true' ? { rejectUnauthorized: false } : undefined,
+  max: process.env.VERCEL ? 3 : 10, // serverless: keep connections per function low
 });
 export const q = (text, params) => pool.query(text, params).then(r => r.rows);
 

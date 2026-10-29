@@ -28,6 +28,23 @@ Server dev mode needs Node 20.6 or newer (it reads `server/.env`).
 Notes: Render's free Postgres expires after 30 days and the free web service sleeps when idle, so use paid plans for a live shop.
 To use Supabase or another host instead, set `DATABASE_URL` yourself and `PGSSL=true`.
 
+## Deploy on Vercel (client and server as two projects)
+Create two Vercel projects from the same repo.
+
+**1. Server project** (Root Directory: `server`)
+- Environment variables: `DATABASE_URL`, `PGSSL=true`, `JWT_SECRET`, `ADMIN_EMAIL`, `ADMIN_PASSWORD`, `CORS_ORIGIN` (your client URL, e.g. `https://ceees.vercel.app`), plus the Paystack keys.
+- Use a pooled Postgres URL (Supabase: the "Transaction pooler" string, port 6543) because every serverless call opens its own connections.
+- Visit `https://<server-url>/api/health`. You should see `{"ok":true}`.
+
+**2. Client project** (Root Directory: `client`, framework preset Vite)
+- Environment variable: `VITE_API_URL=https://<server-url>` (no trailing slash).
+- Redeploy after setting it. Vite reads this value at build time, so changing it later needs a new build.
+
+**Still seeing 401/403/404?**
+- 401 with an HTML "Authentication Required" page: turn off Vercel Deployment Protection for both projects (Settings > Deployment Protection) or use the production URL.
+- 404 on `/api/...` from the client: `VITE_API_URL` is missing, so the browser calls the client's own domain.
+- CORS error in the browser console: `CORS_ORIGIN` must match the client URL exactly (https, no trailing slash). Separate multiple URLs with commas.
+
 ## Paystack
 Cards are paid in the Paystack popup. The server initialises the transaction, verifies it with Paystack, and only then accepts
 it as a payment, once per sale and for the exact amount. Voiding a sale does not refund cards; refund in the Paystack dashboard.
