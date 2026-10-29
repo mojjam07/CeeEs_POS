@@ -41,3 +41,17 @@ table{width:100%;border-collapse:collapse}th,td{text-align:left;padding:9px 8px;
 .empty{color:var(--mut);padding:18px;text-align:center}.login{min-height:100vh;display:grid;place-items:center;padding:16px}.login .card{width:100%;max-width:360px}.login h1{font-size:34px;color:var(--pri)}
 @media(max-width:900px){.sell{grid-template-columns:1fr}.cartp{position:static}}
 @media print{body *{visibility:hidden}.receipt,.receipt *{visibility:visible}.receipt{position:absolute;left:0;top:0;width:80mm;border:0}}
+/* responsive navbar */
+header{position:sticky;top:0;z-index:15}
+.menu{display:flex;align-items:center;flex-wrap:wrap;gap:10px 14px;flex:1}
+.burger{display:none;background:transparent;color:inherit;border:1px solid currentColor;border-radius:8px;width:40px;height:36px;font-size:20px;line-height:1;cursor:pointer}
+@media(max-width:760px){
+  header{padding:10px 14px}
+  .burger{display:block;margin-left:auto}
+  .menu{display:none;flex:0 0 100%;flex-direction:column;align-items:stretch;gap:8px;padding-top:8px;border-top:1px solid rgba(255,255,255,.25)}
+  .menu.open{display:flex}
+  nav{flex-direction:column;margin:0;gap:2px}
+  nav button{text-align:left;padding:12px;font-size:16px}
+  .who{padding:0 12px}
+  .out{padding:11px;text-align:center}
+}

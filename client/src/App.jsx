@@ -16,6 +16,7 @@ export default function App() {
   const [ready, setReady] = useState(!getToken());
   const [page, setPage] = useState('sell');
   const [toast, setToast] = useState('');
+  const [open, setOpen] = useState(false); // mobile menu
 
   const boot = async () => {
     try { setUser(await api('/auth/me')); setSettings(await api('/settings')); } catch { setToken(null); }
@@ -35,9 +36,12 @@ export default function App() {
     <Ctx.Provider value={{ user, settings, setSettings, flash, cur: settings.currency }}>
       <header>
         <h1>{settings.store_name}</h1>
-        <nav>{tabs.map(([k, l]) => <button key={k} className={k === page ? 'on' : ''} onClick={() => setPage(k)}>{l}</button>)}</nav>
-        <span className="who">{user.name} · {user.role}</span>
-        <button className="out" onClick={() => { setToken(null); location.reload(); }}>Sign out</button>
+        <button className="burger" aria-label="Menu" aria-expanded={open} onClick={() => setOpen(o => !o)}>{open ? '✕' : '☰'}</button>
+        <div className={'menu' + (open ? ' open' : '')}>
+          <nav>{tabs.map(([k, l]) => <button key={k} className={k === page ? 'on' : ''} onClick={() => { setPage(k); setOpen(false); }}>{l}</button>)}</nav>
+          <span className="who">{user.name} · {user.role}</span>
+          <button className="out" onClick={() => { setToken(null); location.reload(); }}>Sign out</button>
+        </div>
       </header>
       <main><Page /></main>
       {toast && <div id="toast" role="status">{toast}</div>}
